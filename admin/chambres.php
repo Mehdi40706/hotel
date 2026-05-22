@@ -1,11 +1,9 @@
 <?php
 require_once '../includes/header.php';
 require_once '../config/db.php';
+require_once '../includes/functions.php';
+requireAdmin();
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /hotel/auth/login.php');
-    exit;
-}
 
 $message = '';
 $erreur  = '';
@@ -19,15 +17,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $description = trim($_POST['description']);
     $photo       = '';
 
+    // Validation des champs obligatoires
+    if (empty($numero)) {
+        $erreur = "❌ Le numéro de chambre est obligatoire !";
+    } elseif (!is_numeric($numero) || $numero <= 0) {
+        $erreur = "❌ Le numéro de chambre doit être un nombre positif !";
+    } elseif (empty($type)) {
+        $erreur = "❌ Le type de chambre est obligatoire !";
+    } elseif (empty($prix) || !is_numeric($prix) || $prix <= 0) {
+        $erreur = "❌ Le prix doit être un nombre positif !";
+    } elseif (empty($capacite) || !is_numeric($capacite) || $capacite <= 0) {
+        $erreur = "❌ La capacité doit être un nombre positif !";
+    } elseif (!isset($_FILES['photo']) || $_FILES['photo']['error'] !== 0) {
+        $erreur = "❌ Une photo est obligatoire !";
+    }
+
     // Upload de la photo
-    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
+    if (!$erreur && isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
         $ext      = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
         $allowed  = ['jpg', 'jpeg', 'png', 'webp'];
 
         if (!in_array(strtolower($ext), $allowed)) {
-            $erreur = "Format de photo non autorisé (jpg, jpeg, png, webp).";
+            $erreur = "❌ Format de photo non autorisé (jpg, jpeg, png, webp).";
         } elseif ($_FILES['photo']['size'] > 2 * 1024 * 1024) {
-            $erreur = "La photo ne doit pas dépasser 2 Mo.";
+            $erreur = "❌ La photo ne doit pas dépasser 2 Mo.";
         } else {
             $photo = uniqid('chambre_') . '.' . $ext;
             move_uploaded_file($_FILES['photo']['tmp_name'], '../assets/uploads/' . $photo);
@@ -35,12 +48,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 
     if (!$erreur) {
-        $stmt = $pdo->prepare("
-            INSERT INTO chambres (numero, type, prix_nuit, capacite, description, photo)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ");
-        $stmt->execute([$numero, $type, $prix, $capacite, $description, $photo]);
-        $message = "✅ Chambre ajoutée avec succès !";
+        // Vérifier si le numéro de chambre existe déjà
+        $stmt_check = $pdo->prepare("SELECT id FROM chambres WHERE numero = ?");
+        $stmt_check->execute([$numero]);
+        
+        if ($stmt_check->fetch()) {
+            $erreur = "❌ Le numéro de chambre $numero existe déjà !";
+        } else {
+            $stmt = $pdo->prepare("
+                INSERT INTO chambres (numero, type, prix_nuit, capacite, description, photo)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([$numero, $type, $prix, $capacite, $description, $photo]);
+            $message = "✅ Chambre ajoutée avec succès !";
+        }
     }
 }
 

@@ -1,0 +1,385 @@
+/* ─── Variables ─── */
+:root {
+    --primary:      #6366f1;
+    --accent:       #ec4899;
+    --gold:         #f59e0b;
+    --light-bg:     #ffffff;
+    --card-bg:      #f8fafc;
+    --border:       #e2e8f0;
+    --text-primary: #1e293b;
+    --text-muted:   #64748b;
+    --shadow-color: rgba(99, 102, 241, 0.1);
+}
+
+/* ─── Global ─── */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ─── Navbar ─── */
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-brand {
+    color: var(--primary) !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: var(--accent) !important;
+}
+
+.nav-link {
+    color: var(--text-muted) !important;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* ─── Cards ─── */
+.card {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    box-shadow: 0 15px 40px var(--shadow-color) !important;
+}
+
+.card-img-top {
+    border-radius: 20px 20px 0 0;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* ─── Boutons ─── */
+.btn-primary,
+.btn-gold {
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), #818cf8);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    color: white;
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold), #fbbf24);
+    color: white;
+}
+
+.btn-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+    color: white;
+}
+
+.btn-outline-light {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
+/* ─── Hero section ─── */
+.hero {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1)),
+                url('/hotel/assets/img/hero.jpg') center/cover no-repeat;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero > .container {
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Dashboard cards ─── */
+.stat-card {
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 15px 40px var(--shadow-color);
+}
+
+.stat-card.bg-primary {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(129, 140, 248, 0.08));
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.stat-card.bg-success {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(134, 239, 172, 0.08));
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+/* ─── Tables ─── */
+.table {
+    background: transparent;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: rgba(99, 102, 241, 0.08);
+    border-bottom: 2px solid var(--border);
+    color: var(--primary);
+}
+
+.table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.04);
+}
+
+/* ─── Badges ─── */
+.badge {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: var(--primary);
+}
+
+/* ─── Forms ─── */
+.form-control,
+.form-select {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.1);
+    background: white;
+    color: var(--text-primary);
+}
+
+/* ─── Footer ─── */
+footer {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: var(--text-muted);
+    padding: 40px 0;
+    margin-top: 80px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+footer span {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .hero h1 { 
+        font-size: 2.2rem; 
+    }
+    .stat-card { 
+        margin-bottom: 15px; 
+    }
+    body {
+        font-size: 0.95rem;
+    }
+}
+
+/* ─── Animations ─── */
+.fade-in {
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ─── Icons ─── */
+.icon-box {
+    font-size: 3rem;
+    color: var(--primary);
+    transition: all 0.3s ease;
+}
+
+.card:hover .icon-box {
+    transform: scale(1.15) rotateY(10deg);
+}
+
+i {
+    transition: all 0.3s ease;
+}
+
+/* ─── Search & Filter Panel ─── */
+.collapse:not(.show) {
+    display: none;
+}
+
+.collapse.show {
+    display: block;
+}
+
+#filterPanel .form-label {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+#filterPanel .form-control,
+#filterPanel .form-select {
+    border-color: var(--border);
+}
+
+.input-group-text {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+
+/* ─── Room Cards ─── */
+.card .badge {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* ─── Results Info ─── */
+.alert-info {
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: var(--text-primary);
+}

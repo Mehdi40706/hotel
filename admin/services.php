@@ -1,11 +1,8 @@
 <?php
 require_once '../includes/header.php';
 require_once '../config/db.php';
-
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /hotel/auth/login.php');
-    exit;
-}
+require_once '../includes/functions.php';
+requireAdmin();
 
 $message = '';
 
